@@ -1,0 +1,105 @@
+body {
+	background: #00001d; /* For browsers that do not support gradients */
+	background: -webkit-radial-gradient(#002c65, #00001d); /* Safari 5.1 to 6.0 */
+	background: -o-radial-gradient(#002c65, #00001d); /* For Opera 11.6 to 12.0 */
+	background: -moz-radial-gradient(#002c65, #00001d); /* For Firefox 3.6 to 15 */
+	background: radial-gradient(#002c65, #00001d); /* Standard syntax */
+
+	font-family: Arial, sans-serif;
+	color: #ffffff;
+}
+
+.main_container {
+	background: #00357a;
+	margin: auto;
+	max-width: 1127px;
+	min-width: 958px;
+	padding: 10px;
+	border-style: ridge;
+	border-width: 2px;
+	border-color: #74b1ff;
+	border-radius: 5px;
+	margin-bottom: 20px;
+}
+
+.single {
+	margin: auto;
+	max-width: 1127px;
+	min-width: 958px;
+}
+
+.intitle {
+	font-size: 10pt;
+}
+
+p {
+	margin-top: 0.6em;
+	margin-bottom: 0.6em;
+}
+
+a:link{
+	color:  white;
+}
+
+a:visited{
+	color: lightgrey;
+}
+
+a:hover{
+	color: red;
+}
+
+.upper_box {
+	display: table;
+}
+
+.dz_canvas_etc, .coordinates, .do_canvas_etc {
+	display: table-cell;
+	padding-top: 0;
+	vertical-align: top;
+}
+
+.canvas_wrapper {
+	border-style: ridge;
+    border-width: 3px;
+    border-radius: 2px;
+	border-color: #fff;
+	overflow: hidden;
+}
+
+.coordinates {
+	padding: 5px;
+	padding-top: 7px;
+	text-align: center;
+	width: 30%;
+}
+
+.youtube_video {
+	max-width: 1151px;
+	margin: auto;
+	margin-top: 25px;
+	margin-bottom: 25px;
+}
+
+h2 {
+	margin-top: 0;
+	margin-bottom: 5px;
+}
+
+h3 {
+	margin-top: 0;
+	margin-bottom: 5px;
+}
+
+
+.slider_value {
+	font-size: 1.5em;
+}
+
+#coordinates, #coordinates_game, #direction {
+	font-size: 1.3em;
+}
+
+.p_no_margin {
+	margin:0;
+}

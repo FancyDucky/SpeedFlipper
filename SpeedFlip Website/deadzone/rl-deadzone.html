@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Rocket League Deadzone Visualizer</title>
+	<script type="text/javascript" src="canvaslayers.js"></script>
+	<script type="text/javascript" src="screen.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div class="single" style="height:37px">
+		<h1 style="text-align: left">Rocket League Deadzone Visualizer <span class="intitle">by HalfwayDead (<a href ="https://rocketscience.fyi/">Rocket Science</a>)</span> <span class="intitle" style="float:right">  <a href="https://twitter.com/HalfwayDeadRL">Follow @HalfwayDeadRL</a></span></h1>
+
+	</div>
+	<div class="main_container">
+		<div class="upper_box">
+			<div class="dz_canvas_etc">
+				<h2>Turning</h2>
+				<div class="canvas_wrapper" style="position: relative; width: 400px; height: 400px">
+					<canvas id="deadzone" width="400" height="400" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+					<canvas id="deadzone_arrow" width="400" height="400" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+					<canvas id="deadzone_circle_overlay" width="400" height="400" style="position: absolute; left: 0; top: 0; z-index: 2;"></canvas>
+				</div>
+				<p class="p_no_margin"><input type="checkbox" id="alternate_arrow" onchange="change_arrow()">display alternative arrow</p>
+			</div>
+			<div class="coordinates">
+				<p class="p_no_margin"><b>Raw input:</b><br/><span id="coordinates">&nbsp;</span></p>
+				<p><b>Game input:</b><br/><span id="coordinates_game">&nbsp;</span></p>
+				<p><b>Direction angle:</b><br/><span id="direction">&nbsp;</span></p>
+				<p><b>Deadzone:</b><input type="range" id="deadzone_slider" value="30" max="40" oninput="slider_update()" style="width: 95%;"><span class="slider_value" id="slider_value">0.30</span></p>
+				<p><b>Dodge Deadzone:</b><input type="range" id="dodge_slider" value="50" max="100" min="10" oninput="dodge_update()" style="width: 95%;"><span class="slider_value" id="dodge_slider_value">0.50</span></p>
+				<div class="settings">
+					<h3>Settings</h3>
+					<p class="p_no_margin"><input type="checkbox" id="round_overlay" onchange="overlay_update()"  checked>show circular overlay<br/>
+					<input type="number" id="max_diag" min="0" max="1" step="0.01" value="0.77" oninput="overlay_update()" style="width:42px;""> max. diagonal value</p>
+					<p>
+						Controller: 
+						<select style="max-width:150px; min-width:100px" id="controller_select" onchange="update_controller_select()">
+						    <option value="0">None Found</option>
+						</select><br/>
+						<input type="checkbox" id="right_stick" onchange="stick_update()">use right analog stick
+					</p>
+					<p>
+						Anti-Aliasing: 
+						<select id="AA" onchange="update_AA()">
+						    <option value="1">Off</option>
+						    <option value="2">4x</option>
+						    <option value="3">9x</option>
+						    <option value="4">16x</option>
+						</select>
+					</p>
+				</div>
+			</div>
+			
+			<div class="do_canvas_etc">
+				<h2>Dodging</h2>
+				<div class="canvas_wrapper" style="position: relative; width: 400px; height: 400px">
+					<canvas id="dodge" width="400" height="400" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+					<canvas id="dodge_arrow" width="400" height="400" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+					<canvas id="dodge_circle_overlay" width="400" height="400" style="position: absolute; left: 0; top: 0; z-index: 2;"></canvas>
+				</div>
+				<p class="p_no_margin"><input type="checkbox" id="alternate_stats" onchange="change_stats()">show dodge stats when using gamepad</p>
+			</div>
+			
+		</div>	
+	</div>
+	<h2 class="single">Watch the video below for the full explanation</h2>
+	<p class="single"><a href="https://youtu.be/2BHjvhxw06A">Embed turned into a link for privacy purposes. If you do not wish for YouTube to know which site you came from, copy the link into your clipboard and open it in a new tab.</a></p>
+	<div class="single">
+		<h2 style="margin-top: 10px;">Controller Configs:</h2>
+		<p><a href="steam://controllerconfig/252950/951153937">Only left stick squared (steam://controllerconfig/252950/951153937) </a></p>
+		<p><a href="steam://controllerconfig/252950/951149985">Both sticks squared (steam://controllerconfig/252950/951149985) </a></p>
+	</div>
+
+	<p class="single" style="text-align: right; font-size: 9pt"><a href="https://impressum.rocketscience.fyi">Impressum</a></p>
+	<p class="single" style="text-align: right; font-size: 9pt"><a href="license.txt">License for an API that I used (CanvasLayers)</a></p>
+	<script data-collect-dnt="true" async defer src="https://info.rocketscience.fyi/latest.js"></script>
+	<noscript><img src="https://info.rocketscience.fyi/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript>
+</body>
+</html>
