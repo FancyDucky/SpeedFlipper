@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Speed Flipper — Rocket League Speedflip Trainer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="bg"></div>
+    <div class="page">
+      <header class="header">
+        <h1 class="rainbow-text">Speed Flipper</h1>
+        <p class="subtitle">
+          Rocket League speedflip trainer, designed for Musty&apos;s Speedflip Kickoff Test
+          training pack (<span class="code">A503-264C-A7EB-D282</span>).
+        </p>
+      </header>
+
+      <main>
+        <section class="card">
+          <div class="setup-header">
+            <h2>Controller</h2>
+            <button id="howto-btn" class="secondary-button" type="button">
+              How To Use
+            </button>
+          </div>
+          <div class="status-row">
+            <div>
+              <span class="status-label">Controller:</span>
+              <span id="gamepad-status" class="status-pill status-bad">Not connected</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Controller Bindings</h2>
+          <div class="deadzone-controls">
+            <div class="deadzone-group">
+              <div class="stat-label">Deadzone</div>
+              <div class="deadzone-row">
+                <input
+                  type="range"
+                  id="deadzone-slider"
+                  min="0"
+                  max="40"
+                  value="30"
+                />
+                <input
+                  id="deadzone-value"
+                  class="deadzone-value-input"
+                  type="number"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value="0.30"
+                />
+              </div>
+              <div class="stat-help">
+            Set this to your ingame deadzone.
+              </div>
+            </div>
+          </div>
+
+          <div class="bind-buttons">
+            <button class="rebind" type="button" data-bind-action="resetShotButton">
+              Reset Shot (Start Attempt)<br />
+              <span id="binding-reset-label">Not bound</span>
+            </button>
+            <button class="rebind" type="button" data-bind-action="jumpButton">
+              Jump Button<br />
+              <span id="binding-jump-label">Not bound</span>
+            </button>
+            <button class="rebind" type="button" data-bind-action="boostButton">
+              Boost Button<br />
+              <span id="binding-boost-label">Not bound</span>
+            </button>
+            <button class="rebind" type="button" data-bind-action="throttleButton">
+              Throttle (Forward)<br />
+              <span id="binding-throttle-label">Not bound</span>
+            </button>
+            <button class="rebind" type="button" data-bind-action="reverseButton">
+              Reverse<br />
+              <span id="binding-reverse-label">Not bound</span>
+            </button>
+            <button class="rebind" type="button" data-bind-action="neutralAirRollButton">
+              Neutral Air Roll<br />
+              <span id="binding-neutral-roll-label">Not bound</span>
+            </button>
+            <button class="rebind" type="button" data-bind-action="dirAirRollLeftButton">
+              Directional Air Roll Left<br />
+              <span id="binding-dir-roll-left-label">Not bound</span>
+            </button>
+            <button class="rebind" type="button" data-bind-action="dirAirRollRightButton">
+              Directional Air Roll Right<br />
+              <span id="binding-dir-roll-right-label">Not bound</span>
+            </button>
+            <button class="rebind" type="button" data-bind-action="playbackToggleButton">
+              Play / Restart Playback<br />
+              <span id="binding-playback-label">Not bound</span>
+            </button>
+            <button class="rebind" type="button" data-bind-action="playbackSpeedUpButton">
+              Playback Speed +10%<br />
+              <span id="binding-playback-up-label">Not bound</span>
+            </button>
+            <button class="rebind" type="button" data-bind-action="playbackSpeedDownButton">
+              Playback Speed -10%<br />
+              <span id="binding-playback-down-label">Not bound</span>
+            </button>
+            <button id="unbind-all-btn" class="rebind" type="button">
+              UNBIND ALL BUTTONS
+            </button>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="overlay-header">
+            <h2>Controller Overlay/Playback</h2>
+            <button id="popout-overlay-btn" class="primary-button popout-overlay-btn" type="button">
+              Pop Out Overlay
+            </button>
+          </div>
+          <p class="note">
+            After an attempt finishes (when you reset shot), you can replay your inputs on a virtual
+            controller to see exactly what you were doing.
+          </p>
+
+          <div class="playback-controls">
+            <div class="timeline-row">
+              <button id="playback-toggle-btn" class="primary-button" type="button">
+                Play
+              </button>
+              <div class="timeline-wrap">
+                <div id="timeline-markers" class="timeline-markers" aria-hidden="true"></div>
+                <input
+                  type="range"
+                  id="playback-timeline"
+                  class="playback-timeline"
+                  min="0"
+                  max="0"
+                  value="0"
+                  step="1"
+                  aria-label="Playback timeline"
+                />
+              </div>
+            </div>
+            <div class="timeline-time">
+              <span id="playback-time-label" class="playback-time-label">0.00s / 0.00s</span>
+            </div>
+            <div class="playback-speed-row">
+              <span class="playback-speed-label">Playback Speed</span>
+              <div class="playback-speed-inputs">
+                <input
+                  type="range"
+                  id="playback-speed-range"
+                  min="5"
+                  max="100"
+                  value="100"
+                />
+                <input
+                  type="number"
+                  id="playback-speed-value"
+                  min="5"
+                  max="100"
+                  step="1"
+                  value="100"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="overlay-row">
+            <div id="controller-overlay" class="controller-overlay">
+              <div class="controller-left">
+                <div class="stick-and-triggers">
+                  <div class="stick-column">
+                    <div class="angle-bar">
+                      <div class="angle-bar-track">
+                        <div id="angle-needle" class="angle-needle"></div>
+                      </div>
+                      <div class="angle-bar-labels">
+                        <span>-90°</span>
+                        <span>0°</span>
+                        <span>90°</span>
+                      </div>
+                    </div>
+                    <div class="stick-ring">
+                    <div id="stick-markers" class="stick-markers" aria-hidden="true"></div>
+                      <div id="overlay-stick" class="stick-dot"></div>
+                    </div>
+                  </div>
+                  <div class="trigger-bumper-group">
+                    <div class="trigger-row">
+                      <div
+                        id="btn-6"
+                        class="ctrl-btn ctrl-trigger"
+                        data-button-index="6"
+                        aria-label="Left Trigger"
+                      ></div>
+                    </div>
+                    <div class="trigger-row">
+                      <div
+                        id="btn-4"
+                        class="ctrl-btn ctrl-bumper"
+                        data-button-index="4"
+                        aria-label="Left Bumper"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="controller-center">
+                <div class="center-row">
+                  <div
+                    id="btn-8"
+                    class="ctrl-btn small"
+                    data-button-index="8"
+                    aria-label="View / Share"
+                  ></div>
+                  <div
+                    id="btn-16"
+                    class="ctrl-btn home"
+                    data-button-index="16"
+                    aria-label="Home"
+                  ></div>
+                  <div
+                    id="btn-9"
+                    class="ctrl-btn small"
+                    data-button-index="9"
+                    aria-label="Menu / Options"
+                  ></div>
+                </div>
+                <div class="dpad">
+                  <div
+                    id="btn-12"
+                    class="ctrl-btn dpad up"
+                    data-button-index="12"
+                    aria-label="D-Pad Up"
+                  ></div>
+                  <div
+                    id="btn-13"
+                    class="ctrl-btn dpad down"
+                    data-button-index="13"
+                    aria-label="D-Pad Down"
+                  ></div>
+                  <div
+                    id="btn-14"
+                    class="ctrl-btn dpad left"
+                    data-button-index="14"
+                    aria-label="D-Pad Left"
+                  ></div>
+                  <div
+                    id="btn-15"
+                    class="ctrl-btn dpad right"
+                    data-button-index="15"
+                    aria-label="D-Pad Right"
+                  ></div>
+                </div>
+              </div>
+
+              <div class="controller-right">
+                <div class="face-and-triggers">
+                  <div class="face-buttons">
+                    <div
+                      id="btn-3"
+                      class="ctrl-btn face y"
+                      data-button-index="3"
+                      aria-label="Y / Triangle"
+                    ></div>
+                    <div
+                      id="btn-0"
+                      class="ctrl-btn face a"
+                      data-button-index="0"
+                      aria-label="A / Cross"
+                    ></div>
+                    <div
+                      id="btn-1"
+                      class="ctrl-btn face b"
+                      data-button-index="1"
+                      aria-label="B / Circle"
+                    ></div>
+                    <div
+                      id="btn-2"
+                      class="ctrl-btn face x"
+                      data-button-index="2"
+                      aria-label="X / Square"
+                    ></div>
+                  </div>
+                  <div class="trigger-bumper-group right-triggers">
+                    <div class="trigger-row">
+                      <div
+                        id="btn-7"
+                        class="ctrl-btn ctrl-trigger"
+                        data-button-index="7"
+                        aria-label="Right Trigger"
+                      ></div>
+                    </div>
+                    <div class="trigger-row">
+                      <div
+                        id="btn-5"
+                        class="ctrl-btn ctrl-bumper"
+                        data-button-index="5"
+                        aria-label="Right Bumper"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="overlay-mini-stats">
+              <div class="mini-stat">
+                <span class="mini-label">Double Jump Speed</span>
+                <span id="jump-gap-indicator" class="mini-value mini-muted">–</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-label">Car Settled</span>
+                <span id="overlay-settle" class="mini-value">–</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-label">Boost Before Throttle</span>
+                <span id="overlay-boost" class="mini-value">–</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-label">First Jump</span>
+                <span id="overlay-first-jump" class="mini-value">–</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-label">Speedflip Angle</span>
+                <span id="overlay-angle" class="mini-value">–</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-label">Flip Cancel Timing</span>
+                <span id="overlay-flip-cancel" class="mini-value">–</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card current-stats hidden">
+          <h2>Current Attempt Stats</h2>
+
+          <div class="live-angle-row">
+            <div>
+              <div class="stat-label">Live Stick / Angle (Rocket League view)</div>
+              <div class="live-angle-values">
+                <span id="live-stick-x">X: 0.00</span>
+                <span id="live-stick-y">Y: 0.00</span>
+                <span id="live-angle-deg">Angle: –</span>
+              </div>
+              <div class="stat-help">
+                Shows the dodge angle after applying Rocket League-style deadzone and dodge deadzone
+                (0° = straight up, negative = up-left, positive = up-right).
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat">
+              <div class="stat-label">1. Car Settled Before Input</div>
+              <div class="stat-value">
+                <span id="stat-settle-time">–</span>
+                <span id="stat-settle-grade" class="grade-pill">–</span>
+              </div>
+              <div class="stat-help">
+                Time from your bound Reset Shot (Start Attempt) to first input. ≥ 150&nbsp;ms is
+                good.
+              </div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">2. Boost Before Throttle</div>
+              <div class="stat-value">
+                <span id="stat-boost-before-throttle">–</span>
+              </div>
+              <div class="stat-help">
+                Checks if you pressed/held <strong>Boost</strong> before
+                <strong>Throttle (RT)</strong> in this attempt.
+              </div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">3. Time: First Input → First Jump</div>
+              <div class="stat-value">
+                <span id="stat-jump-delay-ms">–</span>
+                <span id="stat-jump-delay-grade" class="grade-pill">–</span>
+              </div>
+              <div class="stat-help">
+                &lt; 414&nbsp;ms = <span class="grade-text bad">Fast</span>,
+                415–460 = <span class="grade-text warn">Bit Fast</span>,
+                461–630 = <span class="grade-text good">Perfect</span>,
+                631–674 = <span class="grade-text warn">Bit Slow</span>,
+                ≥ 675 = <span class="grade-text bad">Slow</span>.
+              </div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">4. Speedflip Angle (2nd Jump)</div>
+              <div class="stat-value">
+                <span id="stat-angle-deg">–</span>
+                <span id="stat-angle-grade" class="grade-pill">–</span>
+              </div>
+              <div class="stat-help">
+                Left stick angle when you press <strong>Jump</strong> the second time.
+                For a left speedflip, good is between -37° and -23° (up-left).
+              </div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">5. Time Between Jumps</div>
+              <div class="stat-value">
+                <span id="stat-jump-gap-ms">–</span>
+                <span id="stat-jump-gap-grade" class="grade-pill">–</span>
+              </div>
+              <div class="stat-help">
+                Time from first to second jump. ≤ 115&nbsp;ms is ideal for a quick diagonal flip.
+              </div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">6. Flip Cancel Timing</div>
+              <div class="stat-value">
+                <span id="stat-cancel-ms">–</span>
+                <span id="stat-cancel-grade" class="grade-pill">–</span>
+              </div>
+              <div class="stat-help">
+                Time from second jump to pulling the stick downward (flip cancel).
+                &lt; 50&nbsp;ms = good, &lt; 75 = ok, ≥ 76 = bad.
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+      </main>
+
+      <footer class="footer">
+        <p>
+          This tool uses the browser&apos;s Gamepad API. Keep this tab open while you practice so it
+          can read your controller input.
+        </p>
+      </footer>
+
+      <div class="made-by" id="made-by">
+        <span
+          >Created by
+          <a
+            id="fancyDuckLink"
+            href="https://www.youtube.com/@FancyDuck_RL"
+            target="_blank"
+            rel="noopener noreferrer"
+            >FancyDuck</a
+          ></span
+        >
+        <img src="Assets/DuckSmall.jpg" alt="FancyDuck avatar" class="made-by-avatar" />
+      </div>
+    </div>
+
+    <!-- Linktree-style modal -->
+    <div id="linktreeOverlay" class="lt-overlay" aria-hidden="true">
+      <div class="lt-sheet" role="dialog" aria-modal="true" aria-labelledby="ltTitle">
+        <button class="lt-close" type="button" data-close-overlay>&times;</button>
+        <img src="Assets/Duck.jpg" alt="FancyDuck profile picture" class="lt-avatar" />
+        <div id="ltTitle" class="lt-title">FancyDuck</div>
+        <div class="lt-links">
+          <a
+            class="lt-btn"
+            href="https://www.youtube.com/@FancyDuck_RL"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src="Assets/youtube.png" alt="" class="lt-icon" /><span>YouTube</span>
+          </a>
+          <a
+            class="lt-btn"
+            href="https://www.twitch.tv/fancyduck"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src="Assets/Twitch.png" alt="" class="lt-icon" /><span>Twitch</span>
+          </a>
+          <a
+            class="lt-btn"
+            href="https://discord.gg/nScYTuuJ8Q"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src="Assets/discord.png" alt="" class="lt-icon" /><span>Discord</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Welcome modal -->
+    <div id="welcomeOverlay" class="lt-overlay top" aria-hidden="true">
+      <div class="lt-sheet" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+        <button class="lt-close" type="button" data-close-welcome>&times;</button>
+        <div id="welcomeTitle" class="lt-title">
+          Welcome to <span class="rainbow-text">Speed Flipper</span>
+        </div>
+        <div class="lt-links">
+          <video
+            id="welcomeVideo"
+            class="welcome-video"
+            autoplay
+            loop
+            playsinline
+            preload="metadata"
+          >
+            <source src="Assets/Intro.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="unmute-hint">Click Video to Unmute</div>
+          <div class="about-text">
+            This tool reads your controller input while you do "Musty&apos;s Speedflip Kickoff"
+            training pack and tells you what you&apos;re doing right/wrong. This tool is still
+            under development so expect frequent updates and bugs. Enjoy!
+          </div>
+          <div class="press-any">PRESS ANY BUTTON TO CONTINUE</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How To Use modal -->
+    <div id="howToOverlay" class="lt-overlay top" aria-hidden="true">
+      <div class="lt-sheet" role="dialog" aria-modal="true" aria-labelledby="howToTitle">
+        <button class="lt-close" type="button" data-close-howto>&times;</button>
+        <div id="howToTitle" class="lt-title">How to Use Speed Flipper</div>
+        <div class="lt-links">
+          <div class="about-text">
+            <ol class="setup-list">
+              <li>Open Rocket League and load the Musty Speedflip Kickoff Test training pack.</li>
+              <li>Connect your controller to your PC.</li>
+              <li>
+                Focus this tab once and press any button on your controller so the browser can see it.
+              </li>
+              <li>
+                When you press <strong>Reset Shot</strong> in-game, also start an attempt here by
+                pressing your bound Reset Shot button (Start Attempt).
+              </li>
+              <li>
+                Perform your speedflip. After you start the next attempt, use the
+                <strong>Play Last Attempt</strong> button to see your recorded inputs.
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
+
+
